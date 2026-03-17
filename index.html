@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abdulmoiz Hussaini | Portfolio</title>
+    <!-- Lenis CDN for smooth scrolling -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tomorrow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -38,7 +40,6 @@
             position: relative;
             font-family: 'Tomorrow', sans-serif;
             line-height: 1.6;
-            scroll-behavior: smooth;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -46,46 +47,36 @@
             font-weight: 700;
         }
 
-        /* Stars background */
-        .stars {
+        /* Warp Speed Stars Background */
+        #star-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
             pointer-events: none;
+            z-index: 0;
             overflow: hidden;
         }
 
         .star {
             position: absolute;
-            background-color: rgba(255, 255, 255, 0.8);
+            background: white;
             border-radius: 50%;
-            transition: transform 0.5s ease-out;
-        }
-
-        .star.small {
-            width: 1px;
-            height: 1px;
-            animation: twinkle 8s infinite ease-in-out;
-        }
-
-        .star.medium {
-            width: 2px;
-            height: 2px;
-            animation: twinkle 5s infinite ease-in-out;
-        }
-
-        .star.large {
-            width: 3px;
-            height: 3px;
-            animation: twinkle 12s infinite ease-in-out;
+            opacity: 0.8;
+            animation: twinkle var(--duration, 3s) infinite ease-in-out;
+            will-change: transform, opacity;
         }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
+            0%, 100% {
+                opacity: 0.2;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
         }
 
         @keyframes float {
@@ -263,6 +254,7 @@
             text-align: center;
             padding: 2rem;
             position: relative;
+            z-index: 1;
         }
 
         .hero-content {
@@ -355,6 +347,7 @@
             flex-direction: column;
             align-items: center;
             position: relative;
+            z-index: 1;
         }
 
         .projects-title {
@@ -578,6 +571,7 @@
             flex-direction: column;
             align-items: center;
             position: relative;
+            z-index: 1;
         }
 
         .about-title {
@@ -713,6 +707,7 @@
             flex-direction: column;
             align-items: center;
             position: relative;
+            z-index: 1;
         }
 
         .timeline-title {
@@ -873,6 +868,8 @@
             text-align: center;
             border-top: 1px solid var(--border);
             margin-top: auto;
+            position: relative;
+            z-index: 1;
         }
 
         .footer-content {
@@ -1186,8 +1183,8 @@
     </style>
 </head>
 <body>
-    <!-- Stars Background -->
-    <div class="stars"></div>
+    <!-- Warp Speed Stars Background -->
+    <div id="star-container"></div>
 
     <!-- Header with Name and Navigation -->
     <header>
@@ -1426,6 +1423,89 @@
     </div>
 
     <script>
+        // LENIS SMOOTH SCROLL INITIALIZATION
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // WARP SPEED STARS ANIMATION
+        (function () {
+            let container = document.getElementById('star-container');
+            container.innerHTML = '';
+
+            const count = 120; // Increased star count for better effect
+            const stars = [];
+
+            for (let i = 0; i < count; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+
+                // Random Initial Positions
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+
+                // 30% chance to be completely static (distant stars)
+                const isStatic = Math.random() < 0.3;
+                const z = isStatic ? 0 : 0.2 + Math.random() * 0.6; // Speed factor (depth)
+                const size = isStatic ? 1 + Math.random() : 1 + Math.random() * 3; // Static stars smaller
+
+                s.style.left = x + '%';
+                s.style.top = y + '%';
+                s.style.width = size + 'px';
+                s.style.height = size + 'px';
+
+                // Add twinkle variation
+                s.style.setProperty('--duration', (2 + Math.random() * 4) + 's');
+                s.style.animationDelay = (Math.random() * 5) + 's';
+
+                container.appendChild(s);
+                stars.push({ el: s, initialY: y, speed: z });
+            }
+
+            // Sync with Lenis Scroll
+            lenis.on('scroll', ({ scroll, velocity }) => {
+                // Determine stretch based on speed for warp effect
+                const stretch = Math.max(1, Math.min(1 + Math.abs(velocity) * 0.15, 4));
+
+                stars.forEach(star => {
+                    // Static stars don't move or stretch
+                    if (star.speed === 0) {
+                        star.el.style.transform = 'scaleY(1)';
+                        return;
+                    }
+
+                    // Calculate infinite position
+                    let pos = (star.initialY - (scroll * star.speed * 0.05)) % 100;
+                    if (pos < 0) pos += 100; // Handle wrapping
+
+                    star.el.style.top = pos + '%';
+                    // Apply stretch for warp effect
+                    star.el.style.transform = `scaleY(${stretch})`;
+                });
+            });
+
+            // Additional animation for mouse movement parallax
+            document.addEventListener('mousemove', (e) => {
+                const mouseX = (e.clientX / window.innerWidth - 0.5) * 20;
+                const mouseY = (e.clientY / window.innerHeight - 0.5) * 20;
+                
+                stars.forEach(star => {
+                    if (star.speed > 0) {
+                        star.el.style.transform += ` translate(${mouseX * star.speed}px, ${mouseY * star.speed}px)`;
+                    }
+                });
+            });
+        })();
+
+        // Original portfolio functionality
         document.addEventListener('DOMContentLoaded', function() {
             const scrollDown = document.querySelector('.scroll-down');
             const projectsSection = document.querySelector('.projects');
@@ -1435,14 +1515,10 @@
             const cards = document.querySelectorAll('.card');
             const leftArrow = document.querySelector('.left-arrow');
             const rightArrow = document.querySelector('.right-arrow');
-            const starsContainer = document.querySelector('.stars');
             const menuToggle = document.querySelector('.menu-toggle');
             const navMenu = document.querySelector('nav ul');
             const closeMenu = document.querySelector('.close-menu');
             let currentIndex = 0; // Start with first card
-            let scrollTimeout;
-            let mouseX = 0;
-            let mouseY = 0;
             
             // Mobile menu toggle
             menuToggle.addEventListener('click', function() {
@@ -1463,130 +1539,18 @@
                 });
             });
             
-            // Create stars background with different sizes
-            function createStars() {
-                const starsCount = 200;
-                
-                for (let i = 0; i < starsCount; i++) {
-                    const star = document.createElement('div');
-                    
-                    // Random properties for each star
-                    const sizeCategory = Math.random();
-                    if (sizeCategory < 0.6) {
-                        star.classList.add('star', 'small');
-                    } else if (sizeCategory < 0.9) {
-                        star.classList.add('star', 'medium');
-                    } else {
-                        star.classList.add('star', 'large');
-                    }
-                    
-                    const posX = Math.random() * 100;
-                    const posY = Math.random() * 100;
-                    const duration = 3 + Math.random() * 15;
-                    const delay = Math.random() * 5;
-                    
-                    star.style.left = `${posX}%`;
-                    star.style.top = `${posY}%`;
-                    star.style.animationDuration = `${duration}s`;
-                    star.style.animationDelay = `${delay}s`;
-                    
-                    starsContainer.appendChild(star);
-                }
-            }
-            
-            createStars();
-            
-            // Track mouse position for smoother star movement
-            document.addEventListener('mousemove', function(e) {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-            });
-            
-            // Enhanced parallax effect for stars
-            function updateStarsParallax() {
-                const scrollY = window.scrollY;
-                const stars = document.querySelectorAll('.star');
-                
-                stars.forEach(star => {
-                    const speed = 0.05 + Math.random() * 0.1; // Slower speed for smoother movement
-                    const xMove = (mouseX / window.innerWidth - 0.5) * 10;
-                    const yOffset = scrollY * speed;
-                    const yMove = (mouseY / window.innerHeight - 0.5) * 10;
-                    
-                    // Apply smooth transformation
-                    star.style.transform = `translate(${xMove}px, ${yOffset + yMove}px)`;
-                    
-                    // Adjust opacity based on scroll position for depth effect
-                    const opacity = 0.3 + (Math.sin(yOffset * 0.001) * 0.2);
-                    star.style.opacity = Math.max(0.1, Math.min(1, opacity));
-                });
-            }
-            
-            // Space travel effect when navigating
-            function spaceTravelEffect(targetSection) {
-                const stars = document.querySelectorAll('.star');
-                
-                // Speed up stars animation
-                stars.forEach(star => {
-                    const currentDuration = parseFloat(getComputedStyle(star).animationDuration);
-                    star.style.animationDuration = `${currentDuration * 0.2}s`;
-                });
-                
-                // Scroll to section
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-                
-                // Return stars to normal speed after a delay
-                setTimeout(() => {
-                    stars.forEach(star => {
-                        const currentDuration = parseFloat(getComputedStyle(star).animationDuration);
-                        star.style.animationDuration = `${currentDuration * 5}s`;
-                    });
-                }, 800);
-            }
-            
-            // Enable regular scrolling to sections
-            function enableScrollToSections() {
-                projectsSection.style.display = 'flex';
-                aboutSection.style.display = 'flex';
-                timelineSection.style.display = 'flex';
-                window.addEventListener('scroll', handleScroll);
-            }
-            
-            // Handle scroll events
-            function handleScroll() {
-                // Update stars parallax effect
-                updateStarsParallax();
-                
-                // Show/hide scroll to top button
+            // Handle scroll events for scroll to top button
+            window.addEventListener('scroll', function() {
                 if (window.pageYOffset > 300) {
                     scrollTopBtn.style.display = 'flex';
-                    projectsSection.style.display = 'flex';
-                    aboutSection.style.display = 'flex';
-                    timelineSection.style.display = 'flex';
                 } else {
                     scrollTopBtn.style.display = 'none';
                 }
-                
-                // Clear any existing timeout
-                clearTimeout(scrollTimeout);
-                
-                // Set a timeout to handle scroll end
-                scrollTimeout = setTimeout(() => {
-                    // Smoothly adjust stars after scrolling stops
-                    const stars = document.querySelectorAll('.star');
-                    stars.forEach(star => {
-                        star.style.transition = 'transform 1s ease-out';
-                    });
-                }, 100);
-            }
-            
-            // Initialize scroll functionality
-            enableScrollToSections();
+            });
             
             // Scroll to top functionality
             scrollTopBtn.addEventListener('click', function() {
-                spaceTravelEffect(document.body);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                lenis.scrollTo(0);
             });
             
             // Carousel navigation
@@ -1627,40 +1591,22 @@
             // Initialize cards to start with first card
             updateCards();
             
-            // Smooth scrolling for navigation links with space travel effect
-            document.querySelectorAll('nav a, .footer-links a').forEach(anchor => {
+            // Smooth scrolling for navigation links using Lenis
+            document.querySelectorAll('nav a, .footer-links a, .scroll-down').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
                     const targetId = this.getAttribute('href');
-                    const targetSection = document.querySelector(targetId);
                     
-                    if (targetSection) {
-                        targetSection.style.display = 'flex';
-                        spaceTravelEffect(targetSection);
+                    if (targetId && targetId !== '#') {
+                        const targetSection = document.querySelector(targetId);
+                        if (targetSection) {
+                            lenis.scrollTo(targetSection);
+                        }
+                    } else if (this.classList.contains('scroll-down')) {
+                        lenis.scrollTo(projectsSection);
                     }
                 });
             });
-            
-            // Initialize stars parallax
-            updateStarsParallax();
-            
-            // Add scroll event listener for continuous parallax effect
-            window.addEventListener('scroll', function() {
-                // Use requestAnimationFrame for smoother performance
-                requestAnimationFrame(updateStarsParallax);
-            });
-            
-            // Add wheel event listener for smoother scrolling experience
-            window.addEventListener('wheel', function(e) {
-                // Update stars with more intensity during active scrolling
-                const stars = document.querySelectorAll('.star');
-                stars.forEach(star => {
-                    star.style.transition = 'transform 0.1s linear';
-                });
-            });
-            
-            // Animate stars continuously even without scrolling
-            setInterval(updateStarsParallax, 50);
         });
     </script>
 </body>
