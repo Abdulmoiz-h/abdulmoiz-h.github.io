@@ -47,3 +47,6 @@ made all of the commits myself.
 
 **A logic error the AI made that I had to fix manually:**
 
+Claude pulled information from my old website instead of pulling from my current resume and updated experiences, this caused my "Cloud-Native" Resume to be outdated. In order to fix this I had to replace the information with the current experienced on my resume.
+
+For example it put opportunity network on my resume. Although it is a real program that Ive done, it's not relevant to what my career path is. Therefore I had to remove it and replace it with my newer experiences. 
