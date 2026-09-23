@@ -274,3 +274,45 @@ footer p {                   /* (0,0,2) beats the plain `p` rule (0,0,1) */
     width: auto;
   }
 }
+
+/* ==========================================================
+   THE SPECIFICITY CHALLENGE
+   ----------------------------------------------------------
+   All three rules below target the same About paragraph:
+   <section id="about"><p class="intro">...</p></section>
+   and all three set `color` and `font-size`, so they conflict.
+
+   Specificity is scored as (IDs, Classes, Elements):
+
+     p              -> (0, 0, 1)   one element selector
+     .intro         -> (0, 1, 0)   one class selector
+     #about .intro  -> (1, 1, 0)   one ID + one class
+
+   WINNER: `#about .intro`. It has an ID, and a single ID
+   outranks any number of classes or elements, so its navy
+   color and 1.15rem size are applied. (The `margin: 0` from
+   .intro still applies, since nothing overrides it.)
+
+   Order in the file does not matter here: `p` is written
+   LAST, but it still loses because (0,0,1) is the lowest
+   score. Source order only breaks ties between selectors
+   with equal specificity. In Chrome DevTools > Styles, the
+   losing `color` and `font-size` declarations show with a
+   strikethrough.
+   ========================================================== */
+
+#about .intro {              /* (1,1,0) - WINS */
+  color: var(--navy);
+  font-size: 1.15rem;
+}
+
+.intro {                     /* (0,1,0) - loses to the ID rule */
+  color: var(--muted);
+  font-size: 1rem;
+  margin: 0;
+}
+
+p {                          /* (0,0,1) - loses even though it comes last */
+  color: var(--ink);
+  font-size: 1rem;
+}
