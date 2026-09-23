@@ -247,10 +247,12 @@ section {
 footer {
   text-align: center;
   padding: 1.5rem 16px 2.5rem;
+}
+
+footer p {                   /* (0,0,2) beats the plain `p` rule (0,0,1) */
   color: var(--muted);
   font-size: 0.9rem;
 }
-
 /* ---------- Small screens ---------- */
 
 @media (max-width: 600px) {
