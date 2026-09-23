@@ -1,0 +1,274 @@
+/* ==========================================================
+   Abdulmoiz Hussaini — Resume stylesheet
+   ========================================================== */
+
+:root {
+  --ink: #1b2330;
+  --muted: #5a6577;
+  --paper: #f7f6f2;
+  --card: #ffffff;
+  --navy: #1f3a5f;
+  --accent: #c2572b;
+  --line: #e2e0d8;
+  --max: 820px;
+}
+
+/* ---------- Element selectors ---------- */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 0 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--line);
+  color: var(--navy);
+}
+
+h3 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+a {
+  color: var(--navy);
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+ul,
+ol {
+  padding-left: 1.25rem;
+}
+
+li {
+  margin-bottom: 0.35rem;
+}
+
+/* ---------- Header ---------- */
+
+header {
+  background: var(--navy);
+  color: #fff;
+  padding: 3rem 16px 2.5rem;
+}
+
+.header-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.85);
+  flex-shrink: 0;
+}
+
+#name {
+  font-size: 2.6rem;
+  margin: 0 0 0.25rem;
+}
+
+.tagline {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+  color: #d6e0ee;
+}
+
+.contact {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #d6e0ee;
+}
+
+.contact a {
+  color: #fff;
+}
+
+/* ---------- Nav ---------- */
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+}
+
+nav ul {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 16px;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+}
+
+nav li {
+  margin: 0;
+}
+
+nav a {
+  display: inline-block;
+  padding: 0.8rem 0;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* ---------- Main layout ---------- */
+
+main {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 2rem 16px 3rem;
+}
+
+section {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1.75rem;
+  margin-bottom: 1.5rem;
+  scroll-margin-top: 4rem;
+}
+
+.entry {
+  margin-bottom: 1.25rem;
+}
+
+.entry:last-child {
+  margin-bottom: 0;
+}
+
+.entry-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+}
+
+.entry ul,
+.entry p {
+  margin: 0.4rem 0 0;
+}
+
+.date {
+  color: var(--muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+/* ---------- Projects list ---------- */
+
+.project-list li {
+  margin-bottom: 1rem;
+}
+
+.project-list p {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+}
+
+.badge {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: #f4e3da;
+  color: var(--accent);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+/* ---------- Skills table ---------- */
+
+.skills-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.skills-table caption {
+  text-align: left;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.skills-table th,
+.skills-table td {
+  text-align: left;
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.skills-table thead th {
+  background: var(--navy);
+  color: #fff;
+}
+
+.skills-table tbody th {
+  width: 35%;
+  color: var(--navy);
+}
+
+/* ---------- Footer ---------- */
+
+footer {
+  text-align: center;
+  padding: 1.5rem 16px 2.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 600px) {
+  .header-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  #name {
+    font-size: 2rem;
+  }
+
+  section {
+    padding: 1.25rem;
+  }
+
+  .skills-table tbody th {
+    width: auto;
+  }
+}
