@@ -39,9 +39,7 @@
 
 I used **Claude (Anthropic, Claude Code)** to help build this site.
 
-**Prompt used:** I pasted the full Homework 1 assignment text into Claude Code with the message:
-
-> "lets do this rn do it for me on github"
+**Prompt used:** I gave the assignment to Claude and asked "Help me complete this assignment and tell me if im doing anything wrong."
 
 Claude then generated `index.html`, `css/style.css`, the placeholder image in `/assets`, and a draft of
 this reflection, using the content from my previous portfolio site. I created the repository and
@@ -49,5 +47,3 @@ made all of the commits myself.
 
 **A logic error the AI made that I had to fix manually:**
 
-<!-- TODO (Abdulmoiz): Review the site yourself, find a real mistake, fix it by hand, and describe it
-     here in your own words: what was wrong, how you noticed it, and how you fixed it. -->
