@@ -30,6 +30,4 @@ I still used px for small things like 1px borders, where it doesn't matter.
 ## AI Attribution
 
 I used Claude (Anthropic) to help with this assignment. I gave it the homework instructions and
-asked it to build the site. It wrote the HTML, CSS, the project images, and a draft of this
-reflection, using the content from my Homework 1 resume. I checked the site in Chrome DevTools on
-desktop and mobile before submitting.
+asked it to guid me in building the site.
