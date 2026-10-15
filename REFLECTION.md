@@ -1,52 +1,35 @@
-# Reflection — Homework 1: The "Cloud-Native" Resume
+# Homework 2 Reflection
 
-## 1. The path of an HTTP request to https://abdulmoiz-h.github.io
+## 1. flex-direction: row vs. flex-direction: column
 
-1. **URL parsing.** I type `https://abdulmoiz-h.github.io` into Chrome. The browser splits it into the
-   scheme (`https`), the host (`abdulmoiz-h.github.io`), and the path (`/`). Because the scheme is
-   HTTPS, the default port is 443.
-2. **DNS lookup.** The browser has to turn the hostname into an IP address. It checks its own cache,
-   then the operating system's cache, then asks a DNS resolver (usually my ISP's or my router's).
-   If the resolver doesn't know the answer, it asks a root server, then the `.io` TLD servers, and
-   then GitHub's authoritative name servers. Those return the IP addresses of GitHub Pages' servers
-   (for example 185.199.108.153), which sit behind GitHub's CDN (Fastly).
-3. **TCP connection.** The browser opens a TCP connection to that IP on port 443 using the three-way
-   handshake (SYN, SYN-ACK, ACK). The packets travel through my Wi-Fi router, my ISP, and several
-   routers across the Internet, and IP routing moves them hop by hop.
-4. **TLS handshake.** Because the site uses HTTPS, the browser and server negotiate encryption. The
-   server presents a certificate for `*.github.io`, the browser checks that a trusted certificate
-   authority signed it, and both sides agree on session keys. From here on, everything is encrypted.
-5. **HTTP request.** The browser sends a request like:
-   ```
-   GET / HTTP/1.1
-   Host: abdulmoiz-h.github.io
-   User-Agent: Chrome/...
-   Accept: text/html
-   ```
-   The `Host` header matters: thousands of Pages sites share the same IP addresses, and this header is
-   how GitHub knows which user's site I want.
-6. **Server side.** GitHub Pages maps the host to my repository `abdulmoiz-h.github.io`, finds the
-   files it built from the `main` branch, and serves `index.html` for the path `/`. Pages hosts static
-   files only, so no server code runs. It just returns the file.
-7. **HTTP response.** The server replies with `HTTP/1.1 200 OK`, headers such as
-   `Content-Type: text/html; charset=utf-8` and caching headers, and the HTML in the body.
-8. **Parsing and more requests.** Chrome parses the HTML and builds the DOM. When it reaches
-   `<link rel="stylesheet" href="css/style.css">` and `<img src="assets/profile.svg">`, it sends
-   more GET requests over the same connection for those files. After the CSS arrives it builds the
-   CSSOM, applies the cascade and specificity rules, lays out the page, and paints it on screen.
+`flex-direction` sets the main axis of a flex container. With `row`, which is the default, the
+items go side by side from left to right. With `column`, they stack on top of each other from top
+to bottom.
 
-## 2. AI Attribution
+Changing the direction also changes what `justify-content` and `align-items` do. In a row,
+`justify-content` spaces items horizontally and `align-items` lines them up vertically. In a
+column it's the other way around.
 
-I used **Claude (Anthropic, Claude Code)** to help build this site.
+I used both in my navbar. On desktop the links are in a row next to each other. In my 768px media
+query I changed `.nav-links` to `flex-direction: column` so the links stack on mobile, without
+changing any of the HTML.
 
-**Prompt used:** I gave the assignment to Claude and asked "Help me complete this assignment and tell me if im doing anything wrong."
+## 2. Why use relative units instead of px?
 
-Claude then generated `index.html`, `css/style.css`, the placeholder image in `/assets`, and a draft of
-this reflection, using the content from my previous portfolio site. I created the repository and
-made all of the commits myself.
+Pixels are a fixed size, so something like `width: 1100px` looks fine on a laptop but makes a
+phone scroll sideways. Percentages, `fr`, `vw` and `vh` are based on the size of the screen or the
+parent element, so the layout shrinks and grows with the device. For example, my grid columns are
+`1fr` each, so they always split the space that's available.
 
-**A logic error the AI made that I had to fix manually:**
+`rem` is based on the root font size, so if someone makes their browser text bigger, everything
+sized in `rem` gets bigger too. It also made the mobile layout easier: I changed the root font
+size once in the media query instead of editing every font size by hand.
 
-Claude pulled information from my old website instead of pulling from my current resume and updated experiences, this caused my "Cloud-Native" Resume to be outdated. In order to fix this I had to replace the information with the current experienced on my resume.
+I still used px for small things like 1px borders, where it doesn't matter.
 
-For example it put opportunity network on my resume. Although it is a real program that Ive done, it's not relevant to what my career path is. Therefore I had to remove it and replace it with my newer experiences. 
+## AI Attribution
+
+I used Claude (Anthropic) to help with this assignment. I gave it the homework instructions and
+asked it to build the site. It wrote the HTML, CSS, the project images, and a draft of this
+reflection, using the content from my Homework 1 resume. I checked the site in Chrome DevTools on
+desktop and mobile before submitting.

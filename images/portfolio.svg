@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="Responsive Portfolio: laptop and phone showing the same layout">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#24506b"/>
+      <stop offset="1" stop-color="#2f7d8f"/>
+    </linearGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.6" fill="#ffffff" opacity="0.14"/>
+    </pattern>
+  </defs>
+  <rect width="640" height="400" fill="url(#bg)"/>
+  <rect width="640" height="400" fill="url(#dots)"/>
+  <g fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+
+    <rect x="140" y="90" width="280" height="180" rx="12" fill="#ffffff" fill-opacity="0.18"/>
+    <path d="M110 300 h340"/>
+    <path d="M170 125 h220 M170 160 h60 M250 160 h60 M330 160 h60 M170 200 h60 M250 200 h60 M330 200 h60" stroke-width="7"/>
+    <rect x="470" y="140" width="80" height="150" rx="12" fill="#ffffff" fill-opacity="0.18"/>
+    <path d="M490 170 h40 M490 200 h40 M490 230 h40 M490 260 h40" stroke-width="6"/>
+  </g>
+</svg>

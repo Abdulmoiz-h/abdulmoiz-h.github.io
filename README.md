@@ -1,8 +1,5 @@
 # abdulmoiz-h.github.io
 
-Personal resume site for Abdulmoiz Hussaini, live at https://abdulmoiz-h.github.io/
+My portfolio site: https://abdulmoiz-h.github.io/
 
-- `index.html` – single-page resume (semantic HTML5)
-- `css/style.css` – external stylesheet
-- `assets/` – images
-- `REFLECTION.md` – homework reflection
+The Homework 1 version is in the `hw1` folder.
